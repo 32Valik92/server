@@ -11,8 +11,9 @@ import {create, getAll, getLastTags, getOne, remove, update} from "./controllers
 import * as fs from "fs";
 import {handleValidationErrors} from "./utils/handleValidationErrors.js";
 
+const DB_URL = 'mongodb+srv://node1:node1@node1.l876je4.mongodb.net/articleProject'
 mongoose
-    .connect('mongodb+srv://node1:node1@node1.l876je4.mongodb.net/articleProject')
+    .connect(process.env.DB_URL || DB_URL)
     .then(() => {
         console.log("DB ok")
     }).catch((err) => {
@@ -56,7 +57,8 @@ app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, crea
 app.delete('/posts/:id', checkAuth, remove)
 app.patch('/posts/:id', checkAuth, update)
 
-app.listen(4444, (err) => {
+const PORT = process.env.PORT || 4444;
+app.listen(PORT, (err) => {
     if (err) {
         return console.log(err)
     }
